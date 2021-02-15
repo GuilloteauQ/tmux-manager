@@ -1,0 +1,7 @@
+sessions:
+    - name: arion
+      windows:
+          - name: plop
+    - name: g5k
+      windows:
+          - name: nancy
