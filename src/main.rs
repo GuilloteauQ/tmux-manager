@@ -30,8 +30,7 @@ fn main() {
         )
         .get_matches();
     let default_config_file = format!(
-        // "{}/.tmux_manager.yml",
-        "{}/dev/tmux-manger/map.yml",
+        "{}/.tmux-manager.yml",
         home_dir().unwrap().to_str().unwrap()
     );
     let filename = matches.value_of("config").unwrap_or(&default_config_file);
