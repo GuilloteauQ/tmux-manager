@@ -20,11 +20,12 @@ fn create_tmux_panes_helper(
     pane: &Option<Box<Pane>>,
     session_name: &String,
     root: &String,
+    target: usize,
     current_id: &mut usize,
     direction: Direction,
 ) {
     if let Some(split) = pane {
-        split.tmux_split(session_name, root, current_id, direction);
+        split.tmux_split(session_name, root, target, direction);
         *current_id = *current_id + 1;
         split.create_tmux_panes(session_name, root, current_id);
     }
@@ -35,11 +36,20 @@ impl Pane {
     }
 
     pub fn create_tmux_panes(&self, session_name: &String, root: &String, current_id: &mut usize) {
-        create_tmux_panes_helper(&self.left, session_name, root, current_id, Direction::Left);
+        let target = *current_id;
+        create_tmux_panes_helper(
+            &self.left,
+            session_name,
+            root,
+            target,
+            current_id,
+            Direction::Left,
+        );
         create_tmux_panes_helper(
             &self.right,
             session_name,
             root,
+            target,
             current_id,
             Direction::Right,
         );
@@ -47,6 +57,7 @@ impl Pane {
             &self.above,
             session_name,
             root,
+            target,
             current_id,
             Direction::Above,
         );
@@ -54,6 +65,7 @@ impl Pane {
             &self.below,
             session_name,
             root,
+            target,
             current_id,
             Direction::Below,
         );
@@ -63,7 +75,7 @@ impl Pane {
         &self,
         session_name: &String,
         root: &String,
-        target_pane: &usize,
+        target_pane: usize,
         direction: Direction,
     ) {
         if let Some(cmd) = &self.command {
